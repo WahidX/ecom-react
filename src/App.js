@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { connect } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-function App() {
+import Home from './components/Home';
+import CartPage from './components/CartPage';
+import PaymentPage from './components/PaymentPage';
+import WishList from './components/WishList';
+import Page404 from './components/Page404';
+
+import Header from './components/shared/Header';
+import Footer from './components/shared/Footer';
+import CustomizedSnackbar from './components/shared/SnackBar';
+
+// Custom theme
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#202020',
+    },
+  },
+});
+
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <Router>
+        <Header />
+        <CustomizedSnackbar />
+
+        <Switch>
+          <Route exact path="/" component={Home}></Route>
+
+          <Route exact path="/cart" component={CartPage}></Route>
+          <Route exact path="/payment" component={PaymentPage}></Route>
+          <Route exact path="/wishlist" component={WishList}></Route>
+
+          <Route component={Page404} />
+        </Switch>
+
+        <Footer />
+      </Router>
+    </MuiThemeProvider>
   );
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps)(App);

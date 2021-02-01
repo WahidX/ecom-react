@@ -1,0 +1,15 @@
+#footer-container {
+  position: sticky;
+  bottom: 0;
+  align-items: center;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: gray;
+}
+
+#footer-container * {
+  text-decoration: none;
+  color: white;
+}
