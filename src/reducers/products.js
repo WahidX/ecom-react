@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   productList: [],
+  page: 1,
   wishList: [],
   loading: false,
   error: null,
