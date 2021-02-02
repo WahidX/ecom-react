@@ -3,6 +3,7 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILED,
   TOGGLE_WISHLIST,
+  CHANGE_PAGE,
 } from './actionTypes';
 
 import axios from 'axios';
@@ -47,5 +48,12 @@ export function fetchProductsFailed(error) {
   return {
     type: FETCH_PRODUCTS_FAILED,
     error,
+  };
+}
+
+export function changePage(page) {
+  return {
+    type: CHANGE_PAGE,
+    page,
   };
 }

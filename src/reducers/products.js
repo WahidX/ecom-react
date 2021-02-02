@@ -3,6 +3,7 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILED,
   TOGGLE_WISHLIST,
+  CHANGE_PAGE,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -47,6 +48,11 @@ export default function products(state = initialState, action) {
       return {
         ...state,
         wishList: newWishList,
+      };
+    case CHANGE_PAGE:
+      return {
+        ...state,
+        page: action.page,
       };
     default:
       return state;

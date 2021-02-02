@@ -1,28 +1,35 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchProducts } from '../../actions/products';
+import { Pagination } from '@material-ui/lab';
+
+import { changePage, fetchProducts } from '../../actions/products';
 import ProductCard from './ProductCard';
 import Filters from './Filters';
-
+import Configs from '../../utils/configs';
 import './home.css';
 
 function Home(props) {
   useEffect(() => {
-    // Fetching Products
     props.dispatch(fetchProducts());
   }, []);
 
+  // Gathering proucts of the page
   let page = props.products.page;
+  const itemCount = Configs.CARD_ITEMS_COUNT();
+  const totalPages = props.products.productList.length / itemCount - 1;
+
   let products = props.products.productList.slice(
-    (page - 1) * 5,
-    (page - 1) * 5 + 5
+    page * itemCount,
+    page * itemCount + itemCount
   );
 
-  console.log('to be shown', products);
+  let handlePaging = (e, page) => {
+    props.dispatch(changePage(page));
+  };
 
   return (
-    <div>
+    <div id="home-container">
       <Filters />
 
       <div className="home-card-container">
@@ -30,6 +37,13 @@ function Home(props) {
           <ProductCard product={product} />
         ))}
       </div>
+
+      <Pagination
+        className="pagination"
+        count={totalPages}
+        color="primary"
+        onChange={handlePaging}
+      />
     </div>
   );
 }
