@@ -4,6 +4,8 @@ import {
   FETCH_PRODUCTS_FAILED,
   TOGGLE_WISHLIST,
   CHANGE_PAGE,
+  ADD_TO_WISHLIST,
+  RM_FROM_WISHLIST,
 } from './actionTypes';
 
 import axios from 'axios';
@@ -55,5 +57,19 @@ export function changePage(page) {
   return {
     type: CHANGE_PAGE,
     page,
+  };
+}
+
+export function addToWishList(product) {
+  return {
+    type: ADD_TO_WISHLIST,
+    product,
+  };
+}
+
+export function rmFromWishList(product) {
+  return {
+    type: RM_FROM_WISHLIST,
+    product,
   };
 }

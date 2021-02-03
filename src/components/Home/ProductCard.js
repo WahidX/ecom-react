@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import {
   Card,
   CardActions,
@@ -10,9 +11,47 @@ import {
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+
+import { addToWishList, rmFromWishList } from '../../actions/products';
+import { addToCart, rmFromCart } from '../../actions/cart';
 
 function ProductCard(props) {
   let product = props.product;
+
+  // For WishList
+  let wishList = props.products.wishList;
+  let isInWishList = false;
+
+  for (let i = 0; wishList && i < wishList.length; i++) {
+    if (wishList[i]._id.$oid === product._id.$oid) {
+      isInWishList = true;
+      break;
+    }
+  }
+
+  let handleWishListToggle = () => {
+    isInWishList
+      ? props.dispatch(rmFromWishList(props.product))
+      : props.dispatch(addToWishList(props.product));
+  };
+
+  // for Cart
+  let quantities = props.cart.quantities;
+  let qty = 0;
+  if (quantities[product._id.$oid]) {
+    qty = quantities[product._id.$oid].qty;
+  }
+
+  let handleCartToggle = (type) => {
+    if (type === 'add') {
+      qty++;
+      props.dispatch(addToCart(product._id.$oid, product.price));
+    } else if (qty) {
+      qty--;
+      props.dispatch(rmFromCart(product._id.$oid, product.price));
+    }
+  };
 
   return (
     <Card className="home-card" id={'prod-' + product._id.$oid}>
@@ -37,15 +76,32 @@ function ProductCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <IconButton>
-          <FavoriteBorderIcon />
+        <IconButton onClick={handleWishListToggle}>
+          {isInWishList ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => handleCartToggle('add')}>
           <AddIcon />
         </IconButton>
+        {qty ? (
+          <React.Fragment>
+            <span>{qty}</span>
+            <IconButton onClick={() => handleCartToggle('rm')}>
+              <RemoveIcon />
+            </IconButton>
+          </React.Fragment>
+        ) : (
+          ''
+        )}
       </CardActions>
     </Card>
   );
 }
 
-export default ProductCard;
+function mapStateToProps(state) {
+  return {
+    products: state.products,
+    cart: state.cart,
+  };
+}
+
+export default connect(mapStateToProps)(ProductCard);

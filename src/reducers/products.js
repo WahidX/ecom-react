@@ -2,7 +2,8 @@ import {
   START_FETCH_PRODUCTS,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILED,
-  TOGGLE_WISHLIST,
+  ADD_TO_WISHLIST,
+  RM_FROM_WISHLIST,
   CHANGE_PAGE,
 } from '../actions/actionTypes';
 
@@ -33,21 +34,17 @@ export default function products(state = initialState, action) {
         error: action.error,
         loading: false,
       };
-    case TOGGLE_WISHLIST:
-      let removed = false;
-      let newWishList = state.wishList.map((item) => {
-        if (item.id === action.id) {
-          // remove item
-          removed = true;
-        }
-      });
-      if (removed) {
-        // newWishList.push()
-        // from productList having action.id
-      }
+    case ADD_TO_WISHLIST:
       return {
         ...state,
-        wishList: newWishList,
+        wishList: [...state.wishList, action.product],
+      };
+    case RM_FROM_WISHLIST:
+      return {
+        ...state,
+        wishList: state.wishList.filter(
+          (product) => product !== action.product
+        ),
       };
     case CHANGE_PAGE:
       return {

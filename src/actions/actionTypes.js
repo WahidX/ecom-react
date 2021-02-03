@@ -11,7 +11,8 @@ export const FETCH_PRODUCTS_FAILED = 'FETCH_PRODUCTS_FAILED';
 export const CHANGE_PAGE = 'CHANGE_PAGE';
 
 // Wishlist
-export const TOGGLE_WISHLIST = 'TOGGLE_WISHLIST';
+export const ADD_TO_WISHLIST = 'ADD_TO_WISHLIST';
+export const RM_FROM_WISHLIST = 'RM_FROM_WISHLIST';
 
 // Cart
 export const ADD_TO_CART = 'ADD_TO_CART';

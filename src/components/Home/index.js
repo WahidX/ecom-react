@@ -14,11 +14,11 @@ function Home(props) {
     props.dispatch(fetchProducts());
   }, []);
 
-  // Gathering proucts of the page
   let page = props.products.page;
   const itemCount = Configs.CARD_ITEMS_COUNT();
   const totalPages = props.products.productList.length / itemCount - 1;
 
+  // Gathering proucts for the page
   let products = props.products.productList.slice(
     page * itemCount,
     page * itemCount + itemCount

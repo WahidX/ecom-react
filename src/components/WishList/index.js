@@ -1,14 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import ProductCard from '../Home/ProductCard';
 
 function WishList(props) {
+  let wishList = props.products.wishList;
+
   return (
-    <div>
-      <h1>WishList</h1>
-      <h1>WishList</h1>
-      <h1>WishList</h1>
-      <h1>WishList</h1>
+    <div className="home-card-container">
+      {wishList.map((product) => (
+        <ProductCard product={product} />
+      ))}
     </div>
   );
 }
 
-export default WishList;
+function mapStateToProps(state) {
+  return {
+    products: state.products,
+  };
+}
+
+export default connect(mapStateToProps)(WishList);
