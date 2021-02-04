@@ -2,10 +2,10 @@ import {
   START_FETCH_PRODUCTS,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILED,
-  TOGGLE_WISHLIST,
   CHANGE_PAGE,
   ADD_TO_WISHLIST,
   RM_FROM_WISHLIST,
+  CLEAR_WISHLIST,
 } from './actionTypes';
 
 import axios from 'axios';
@@ -71,5 +71,11 @@ export function rmFromWishList(product) {
   return {
     type: RM_FROM_WISHLIST,
     product,
+  };
+}
+
+export function clearWishList() {
+  return {
+    type: CLEAR_WISHLIST,
   };
 }

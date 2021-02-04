@@ -5,6 +5,7 @@ import {
   ADD_TO_WISHLIST,
   RM_FROM_WISHLIST,
   CHANGE_PAGE,
+  CLEAR_WISHLIST,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -45,6 +46,12 @@ export default function products(state = initialState, action) {
         wishList: state.wishList.filter(
           (product) => product !== action.product
         ),
+      };
+
+    case CLEAR_WISHLIST:
+      return {
+        ...state,
+        wishList: [],
       };
     case CHANGE_PAGE:
       return {

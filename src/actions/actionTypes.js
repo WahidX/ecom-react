@@ -13,6 +13,7 @@ export const CHANGE_PAGE = 'CHANGE_PAGE';
 // Wishlist
 export const ADD_TO_WISHLIST = 'ADD_TO_WISHLIST';
 export const RM_FROM_WISHLIST = 'RM_FROM_WISHLIST';
+export const CLEAR_WISHLIST = 'CLEAR_WISHLIST';
 
 // Cart
 export const ADD_TO_CART = 'ADD_TO_CART';
