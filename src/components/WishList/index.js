@@ -9,7 +9,7 @@ function WishList(props) {
   return (
     <div className="home-card-container">
       {wishList.map((product) => (
-        <ProductCard product={product} />
+        <ProductCard product={product} page={'home'} />
       ))}
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
@@ -17,6 +17,7 @@ import Page404 from './components/Page404';
 import Header from './components/shared/Header';
 import Footer from './components/shared/Footer';
 import CustomizedSnackbar from './components/shared/SnackBar';
+import { fetchProducts } from './actions/products';
 
 // Custom theme
 const theme = createMuiTheme({
@@ -28,6 +29,10 @@ const theme = createMuiTheme({
 });
 
 function App(props) {
+  useEffect(() => {
+    props.dispatch(fetchProducts());
+  }, []);
+
   return (
     <MuiThemeProvider theme={theme}>
       <Router>

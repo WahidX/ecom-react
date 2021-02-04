@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import {
   Button,
@@ -14,12 +14,11 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { addToWishList, rmFromWishList } from '../../actions/products';
-import { addToCart, rmFromCart } from '../../actions/cart';
+import { rmFromWishList, addToWishList } from '../../actions/products';
+import { rmFromCart, addToCart } from '../../actions/cart';
 
-function ProductCard(props) {
+function CartCard(props) {
   let product = props.product;
-  let index = props.index;
 
   // For WishList
   let wishList = props.products.wishList;
@@ -48,35 +47,39 @@ function ProductCard(props) {
   let handleCartToggle = (type) => {
     if (type === 'add') {
       qty++;
-      props.dispatch(addToCart(product._id.$oid, product.price, index));
+      props.dispatch(addToCart(product._id.$oid, product.price, product.index));
     } else if (qty) {
       qty--;
-      props.dispatch(rmFromCart(product._id.$oid, product.price, index));
+      props.dispatch(
+        rmFromCart(product._id.$oid, product.price, product.index)
+      );
     }
   };
 
   return (
-    <Card className="home-card" id={'prod-' + product._id.$oid}>
-      <img
-        src={product.images.large.url}
-        alt={product.label}
-        className="home card-img"
-      />
+    <Card className="cart-card">
+      <div className="cart-card-content">
+        <img
+          src={product.images.large.url}
+          alt={product.label}
+          className="home card-img"
+        />
 
-      <CardHeader
-        className="home-card-header"
-        title={product.title}
-        subheader={product.brand}
-      />
+        <CardHeader
+          className="home-card-header"
+          title={product.title}
+          subheader={product.brand}
+        />
 
-      <CardContent>
-        <Typography variant="body2" color="textPrimary">
-          ₹{product.price}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          {product.operatingsystem}
-        </Typography>
-      </CardContent>
+        <CardContent>
+          {product.qty +
+            'x' +
+            product.price +
+            '= ' +
+            product.qty * product.price}
+        </CardContent>
+      </div>
+
       <CardActions className="card-action-container">
         <IconButton onClick={handleWishListToggle}>
           {isInWishList ? <FavoriteIcon /> : <FavoriteBorderIcon />}
@@ -109,9 +112,9 @@ function ProductCard(props) {
 
 function mapStateToProps(state) {
   return {
-    products: state.products,
     cart: state.cart,
+    products: state.products,
   };
 }
 
-export default connect(mapStateToProps)(ProductCard);
+export default connect(mapStateToProps)(CartCard);

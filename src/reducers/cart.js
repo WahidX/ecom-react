@@ -1,7 +1,7 @@
 import { ADD_TO_CART, RM_FROM_CART, CLEAR_CART } from '../actions/actionTypes';
 
 const initialState = {
-  quantities: {},
+  items: {},
   total: 0,
   loading: false,
   error: null,
@@ -9,10 +9,11 @@ const initialState = {
 
 /*
 
-Structure of quantities
+Structure of items
 
-quantities = {
+items = {
   '1231231ID':{
+    index: 2
     price: 1000,
     qty: 3,
   }
@@ -23,34 +24,40 @@ quantities = {
 export default function cart(state = initialState, action) {
   switch (action.type) {
     case ADD_TO_CART:
-      let quantities = state.quantities;
-      if (quantities[action.id]) {
-        quantities[action.id] = {
+      let items = state.items;
+      if (items[action.id]) {
+        items[action.id] = {
           price: action.price,
-          qty: quantities[action.id].qty + 1,
+          index: action.index,
+          qty: items[action.id].qty + 1,
         };
       } else {
-        quantities[action.id] = {
+        items[action.id] = {
           price: action.price,
+          index: action.index,
           qty: 1,
         };
       }
       return {
         ...state,
-        quantities,
+        items,
+        total: state.total + action.price,
       };
     case RM_FROM_CART:
-      let rmquantities = state.quantities;
-      if (rmquantities[action.id] && rmquantities[action.id].qty) {
-        rmquantities[action.id] = {
+      let rmitems = state.items;
+      if (rmitems[action.id] && rmitems[action.id].qty) {
+        rmitems[action.id] = {
+          index: action.index,
           price: action.price,
-          qty: rmquantities[action.id].qty - 1,
+          qty: rmitems[action.id].qty - 1,
         };
-      }
-      return {
-        ...state,
-        quantities: rmquantities,
-      };
+        return {
+          ...state,
+          items: rmitems,
+          total: state.total - action.price,
+        };
+      } else return state;
+
     case CLEAR_CART:
       return initialState;
 
