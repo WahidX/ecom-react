@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -75,23 +76,29 @@ function ProductCard(props) {
           {product.operatingsystem}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions className="card-action-container">
         <IconButton onClick={handleWishListToggle}>
           {isInWishList ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
-        <IconButton onClick={() => handleCartToggle('add')}>
-          <AddIcon />
-        </IconButton>
-        {qty ? (
-          <React.Fragment>
-            <span>{qty}</span>
-            <IconButton onClick={() => handleCartToggle('rm')}>
-              <RemoveIcon />
+        <div className="right-actions">
+          {qty ? (
+            <React.Fragment>
+              <IconButton onClick={() => handleCartToggle('add')}>
+                <AddIcon />
+              </IconButton>
+              <span>{qty}</span>
+              <IconButton onClick={() => handleCartToggle('rm')}>
+                <RemoveIcon />
+              </IconButton>
+            </React.Fragment>
+          ) : (
+            <IconButton onClick={() => handleCartToggle('add')}>
+              <Button variant="outlined" color="secondary">
+                Add to Cart
+              </Button>
             </IconButton>
-          </React.Fragment>
-        ) : (
-          ''
-        )}
+          )}
+        </div>
       </CardActions>
     </Card>
   );

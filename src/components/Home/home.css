@@ -42,3 +42,9 @@
 .home-card-header .MuiCardHeader-content span:nth-child(2) {
   font-size: small;
 }
+
+.card-action-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

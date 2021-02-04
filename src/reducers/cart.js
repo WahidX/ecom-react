@@ -7,12 +7,18 @@ const initialState = {
   error: null,
 };
 
-// quantities = {
-//   '1231231ID':{
-//     price: 1000,
-//     qty: 3,
-//   }
-// }
+/*
+
+Structure of quantities
+
+quantities = {
+  '1231231ID':{
+    price: 1000,
+    qty: 3,
+  }
+}
+
+*/
 
 export default function cart(state = initialState, action) {
   switch (action.type) {
@@ -45,6 +51,8 @@ export default function cart(state = initialState, action) {
         ...state,
         quantities: rmquantities,
       };
+    case CLEAR_CART:
+      return initialState;
 
     default:
       return state;
