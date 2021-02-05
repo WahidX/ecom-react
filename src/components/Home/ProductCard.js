@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -63,11 +64,13 @@ function ProductCard(props) {
         className="home card-img"
       />
 
-      <CardHeader
-        className="home-card-header"
-        title={product.title}
-        subheader={product.brand}
-      />
+      <Link to="/product">
+        <CardHeader
+          className="home-card-header"
+          title={product.title}
+          subheader={product.brand}
+        />
+      </Link>
 
       <CardContent>
         <Typography variant="body2" color="textPrimary">

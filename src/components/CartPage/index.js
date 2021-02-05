@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Paper } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 
 import './cart.css';
 import CartCard from './CartCard';
@@ -28,6 +28,16 @@ function CartPage(props) {
       tmp.index = item.index;
       if (item.qty) products.push(tmp);
     });
+  }
+
+  if (products.length === 0) {
+    return (
+      <center>
+        <Typography variant="h2" style={{ height: '500px', marginTop: '50px' }}>
+          Nothing in here
+        </Typography>
+      </center>
+    );
   }
 
   return (

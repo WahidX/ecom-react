@@ -13,6 +13,7 @@ import CartPage from './components/CartPage';
 import PaymentPage from './components/PaymentPage';
 import WishList from './components/WishList';
 import Page404 from './components/Page404';
+import ProductPage from './components/ProductPage';
 
 import Header from './components/shared/Header';
 import Footer from './components/shared/Footer';
@@ -45,6 +46,7 @@ function App(props) {
           <Route exact path="/cart" component={CartPage}></Route>
           <Route exact path="/payment" component={PaymentPage}></Route>
           <Route exact path="/wishlist" component={WishList}></Route>
+          <Route exact path="/product" component={ProductPage}></Route>
 
           <Route component={Page404} />
         </Switch>
