@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Badge, Toolbar, Typography, Button } from '@material-ui/core';
@@ -23,8 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar() {
+function ButtonAppBar(props) {
   const classes = useStyles();
+  let cartItemsCount = props.cart.count;
 
   return (
     <div className={classes.root} id="appbar">
@@ -40,7 +42,7 @@ export default function ButtonAppBar() {
 
           <Link to="/cart">
             <IconButton>
-              <Badge badgeContent={4} color="primary">
+              <Badge badgeContent={cartItemsCount} color="primary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -50,3 +52,11 @@ export default function ButtonAppBar() {
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    cart: state.cart,
+  };
+}
+
+export default connect(mapStateToProps)(ButtonAppBar);
