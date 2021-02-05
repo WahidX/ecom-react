@@ -25,7 +25,7 @@ function CartCard(props) {
   let isInWishList = false;
 
   for (let i = 0; wishList && i < wishList.length; i++) {
-    if (wishList[i]._id.$oid === product._id.$oid) {
+    if (wishList[i].id === product.id) {
       isInWishList = true;
       break;
     }
@@ -40,28 +40,26 @@ function CartCard(props) {
   // for Cart
   let items = props.cart.items;
   let qty = 0;
-  if (items[product._id.$oid]) {
-    qty = items[product._id.$oid].qty;
+  if (items[product.id]) {
+    qty = items[product.id].qty;
   }
 
   let handleCartToggle = (type) => {
     if (type === 'add') {
       qty++;
-      props.dispatch(addToCart(product._id.$oid, product.price, product.index));
+      props.dispatch(addToCart(product.id, product.price, product.index));
     } else if (qty) {
       qty--;
-      props.dispatch(
-        rmFromCart(product._id.$oid, product.price, product.index)
-      );
+      props.dispatch(rmFromCart(product.id, product.price, product.index));
     }
   };
 
   return (
-    <Card className="cart-card">
+    <Card className="cart-card" key={product.id}>
       <div className="cart-card-content">
         <img
-          src={product.images.large.url}
-          alt={product.label}
+          src={product.imgUrl}
+          alt={product.title}
           className="home card-img"
         />
 

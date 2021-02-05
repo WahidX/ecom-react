@@ -23,7 +23,7 @@ export function fetchProducts() {
 
     axios(config)
       .then(function (response) {
-        dispatch(fetchProductsSuccess(response.data.products));
+        dispatch(fetchProductsSuccess(response.data));
         dispatch(setSnackBar('success', 'Welcome', 3000));
       })
       .catch(function (error) {

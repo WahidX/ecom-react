@@ -27,7 +27,7 @@ function ProductCard(props) {
   let isInWishList = false;
 
   for (let i = 0; wishList && i < wishList.length; i++) {
-    if (wishList[i]._id.$oid === product._id.$oid) {
+    if (wishList[i].id === product.id) {
       isInWishList = true;
       break;
     }
@@ -42,27 +42,23 @@ function ProductCard(props) {
   // for Cart
   let items = props.cart.items;
   let qty = 0;
-  if (items[product._id.$oid]) {
-    qty = items[product._id.$oid].qty;
+  if (items[product.id]) {
+    qty = items[product.id].qty;
   }
 
   let handleCartToggle = (type) => {
     if (type === 'add') {
       qty++;
-      props.dispatch(addToCart(product._id.$oid, product.price, index));
+      props.dispatch(addToCart(product.id, product.price, index));
     } else if (qty) {
       qty--;
-      props.dispatch(rmFromCart(product._id.$oid, product.price, index));
+      props.dispatch(rmFromCart(product.id, product.price, index));
     }
   };
 
   return (
-    <Card className="home-card" id={'prod-' + product._id.$oid}>
-      <img
-        src={product.images.large.url}
-        alt={product.label}
-        className="home card-img"
-      />
+    <Card className="home-card" key={'prod-' + product.id}>
+      <img src={product.imgUrl} alt={product.title} className="home card-img" />
 
       <Link to="/product">
         <CardHeader
@@ -77,7 +73,7 @@ function ProductCard(props) {
           ₹{product.price}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {product.operatingsystem}
+          {product.hardwareplatform}
         </Typography>
       </CardContent>
       <CardActions className="card-action-container">
