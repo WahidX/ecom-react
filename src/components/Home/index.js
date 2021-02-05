@@ -40,7 +40,7 @@ function Home(props) {
 
       <Pagination
         className="pagination"
-        // count={totalPages}
+        count={totalPages}
         color="primary"
         onChange={handlePaging}
       />

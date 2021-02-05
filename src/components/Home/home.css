@@ -57,3 +57,7 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+textarea {
+  resize: none;
+}

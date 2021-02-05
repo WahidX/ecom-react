@@ -4,16 +4,22 @@ import { Link } from 'react-router-dom';
 import {
   Button,
   Card,
+  TextField,
   CardActions,
   CardContent,
   CardHeader,
   IconButton,
+  InputBase,
+  TextareaAutosize,
   Typography,
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import EditIcon from '@material-ui/icons/Edit';
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { addToWishList, rmFromWishList } from '../../actions/products';
 import { addToCart, rmFromCart } from '../../actions/cart';
@@ -21,6 +27,13 @@ import { addToCart, rmFromCart } from '../../actions/cart';
 function ProductCard(props) {
   let product = props.product;
   let index = props.index;
+  const [editable, setEditable] = useState(false);
+  const [title, setTitle] = useState(product.title);
+  const [brand, setBrand] = useState(product.brand);
+  const [price, setPrice] = useState(product.price);
+  const [hardwareplatform, setHardwareplatform] = useState(
+    product.hardwareplatform
+  );
 
   // For WishList
   let wishList = props.products.wishList;
@@ -56,26 +69,96 @@ function ProductCard(props) {
     }
   };
 
+  // Editing
+  let cancelEdit = (e) => {
+    setEditable(false);
+    setTitle(product.title);
+    setBrand(product.brand);
+    setPrice(product.price);
+    setHardwareplatform(product.hardwareplatform);
+  };
+
+  let handleSave = () => {
+    if (title && brand && price !== 0 && typeof (price - 0) === 'number') {
+      console.log('saved');
+    } else {
+      console.log('invalid data');
+    }
+  };
+
   return (
     <Card className="home-card" key={'prod-' + product.id}>
-      <img src={product.imgUrl} alt={product.title} className="home card-img" />
+      <div className="card-action-container">
+        {!editable && (
+          <IconButton onClick={() => setEditable(true)}>
+            <EditIcon />
+          </IconButton>
+        )}
 
-      <Link to="/product">
-        <CardHeader
-          className="home-card-header"
-          title={product.title}
-          subheader={product.brand}
-        />
-      </Link>
+        {editable && (
+          <IconButton onClick={handleSave}>
+            <DoneIcon />
+          </IconButton>
+        )}
 
-      <CardContent>
-        <Typography variant="body2" color="textPrimary">
-          ₹{product.price}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          {product.hardwareplatform}
-        </Typography>
-      </CardContent>
+        <IconButton onClick={() => cancelEdit()}>
+          <CloseIcon />
+        </IconButton>
+      </div>
+
+      <img src={product.imgUrl} alt={title} className="home card-img" />
+
+      {editable ? (
+        <React.Fragment>
+          <TextField
+            multiline
+            rowsMax={3}
+            maxLength="40"
+            defaultValue={title}
+            variant="outlined"
+            placeholder="Enter Title"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+
+          <InputBase value={brand} onChange={(e) => setBrand(e.target.value)} />
+
+          <CardContent>
+            <InputBase
+              placeholder="Platform"
+              value={hardwareplatform}
+              onChange={(e) => setHardwareplatform(e.target.value)}
+            />
+            (₹)
+            <InputBase
+              type="number"
+              required={true}
+              placeholder="Enter Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </CardContent>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <Link to="/product">
+            <CardHeader
+              className="home-card-header"
+              title={title}
+              subheader={brand}
+            />
+          </Link>
+
+          <CardContent>
+            <Typography variant="body2" color="textSecondary">
+              {hardwareplatform}
+            </Typography>
+            <Typography variant="body2" color="textPrimary">
+              ₹{price}
+            </Typography>
+          </CardContent>
+        </React.Fragment>
+      )}
+
       <CardActions className="card-action-container">
         <IconButton onClick={handleWishListToggle}>
           {isInWishList ? <FavoriteIcon /> : <FavoriteBorderIcon />}
