@@ -61,6 +61,16 @@ export default function cart(state = initialState, action) {
         };
       } else return state;
 
+    // case CLEAR_ITEM:
+    //   let newItems = state.items;
+    //   delete newItems[action.id];
+    //   return {
+    //     ...state,
+    //     items: newItems,
+
+    //     }
+    //   }
+
     case CLEAR_CART:
       return initialState;
 

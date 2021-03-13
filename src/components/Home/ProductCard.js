@@ -12,6 +12,7 @@ import {
   InputBase,
   TextareaAutosize,
   Typography,
+  StepContent,
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -21,7 +22,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { wishListToggle, editItem } from '../../actions/products';
+import { wishListToggle, editItem, deleteItem } from '../../actions/products';
 import { addToCart, rmFromCart } from '../../actions/cart';
 import { setSnackBar } from '../../actions/snackbar';
 import DialogBox from '../shared/DialogBox';
@@ -29,7 +30,10 @@ import DialogBox from '../shared/DialogBox';
 function ProductCard(props) {
   let product = props.product;
   let index = props.index;
+
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState('');
+
   const [editable, setEditable] = useState(false);
   const [title, setTitle] = useState(product.title);
   const [brand, setBrand] = useState(product.brand);
@@ -90,6 +94,7 @@ function ProductCard(props) {
       hardwareplatform !== 0 &&
       typeof (price - 0) === 'number'
     ) {
+      setDialogContent('Are you sure want to save changes?');
       setDialogOpen(true);
       // need to send whole product obj with changes
     } else {
@@ -115,14 +120,26 @@ function ProductCard(props) {
     setDialogOpen(false);
   };
 
+  let handleDeleteItem = () => {
+    setDialogContent('Are you sure want to delete?');
+    setDialogOpen(true);
+  };
+
+  let deleteConfirm = () => {
+    console.log('have to delete', index);
+    props.dispatch(deleteItem(product, index));
+    setDialogOpen(false);
+  };
+
   return (
     <Card className="home-card" key={'prod-' + product.id}>
       <DialogBox
         open={dialogOpen}
-        content={'Are you sure want to save changes?'}
-        onConfirm={saveConfirm}
-        onCancel={cancelEdit}
+        content={dialogContent}
+        onConfirm={editable ? saveConfirm : deleteConfirm}
+        onCancel={editable ? cancelEdit : () => setDialogOpen(false)}
       />
+
       <div className="card-action-container">
         {!editable && (
           <IconButton onClick={() => setEditable(true)}>
@@ -136,7 +153,11 @@ function ProductCard(props) {
           </IconButton>
         )}
 
-        <IconButton onClick={() => cancelEdit()}>
+        <IconButton
+          onClick={() => {
+            editable ? cancelEdit() : handleDeleteItem();
+          }}
+        >
           <CloseIcon />
         </IconButton>
       </div>

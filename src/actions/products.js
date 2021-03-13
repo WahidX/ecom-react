@@ -7,11 +7,14 @@ import {
   RM_FROM_WISHLIST,
   EDIT_ITEM,
   CLEAR_WISHLIST,
+  DELETE_ITEM,
+  ADD_ITEM,
 } from './actionTypes';
 
 import axios from 'axios';
 import { APIurls } from '../utils/urls';
 import { setSnackBar } from './snackbar';
+import { rmFromCart, rmFromCartAction } from './cart';
 
 export function fetchProducts() {
   return (dispatch) => {
@@ -98,5 +101,28 @@ export function editItem(product, id) {
     type: EDIT_ITEM,
     product,
     id,
+  };
+}
+
+export function deleteItem(product, index) {
+  return (dispatch) => {
+    dispatch(deleteItemAction(product));
+    dispatch(rmFromWishList(product));
+    // dispatch(rmFromCartAction(product.id, product.price, index));
+    dispatch(setSnackBar('success', 'Deleted Successfully', 2000));
+  };
+}
+
+export function deleteItemAction(product) {
+  return {
+    type: DELETE_ITEM,
+    product,
+  };
+}
+
+export function addItem(product) {
+  return {
+    type: ADD_ITEM,
+    product,
   };
 }

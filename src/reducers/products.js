@@ -7,6 +7,8 @@ import {
   EDIT_ITEM,
   CHANGE_PAGE,
   CLEAR_WISHLIST,
+  DELETE_ITEM,
+  ADD_ITEM,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -64,6 +66,19 @@ export default function products(state = initialState, action) {
       return {
         ...state,
         productList: newProductList,
+      };
+
+    case DELETE_ITEM:
+      return {
+        ...state,
+        productList: state.productList.filter(
+          (product) => product !== action.product
+        ),
+      };
+    case ADD_ITEM:
+      return {
+        ...state,
+        productList: [...state.productList, action.product],
       };
 
     case CHANGE_PAGE:
