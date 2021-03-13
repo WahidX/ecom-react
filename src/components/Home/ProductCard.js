@@ -21,17 +21,15 @@ import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 
-import {
-  addToWishList,
-  rmFromWishList,
-  editItem,
-} from '../../actions/products';
+import { wishListToggle, editItem } from '../../actions/products';
 import { addToCart, rmFromCart } from '../../actions/cart';
 import { setSnackBar } from '../../actions/snackbar';
+import DialogBox from '../shared/DialogBox';
 
 function ProductCard(props) {
   let product = props.product;
   let index = props.index;
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [editable, setEditable] = useState(false);
   const [title, setTitle] = useState(product.title);
   const [brand, setBrand] = useState(product.brand);
@@ -53,8 +51,8 @@ function ProductCard(props) {
 
   let handleWishListToggle = () => {
     isInWishList
-      ? props.dispatch(rmFromWishList(props.product))
-      : props.dispatch(addToWishList(props.product));
+      ? props.dispatch(wishListToggle('rm', props.product))
+      : props.dispatch(wishListToggle('add', props.product));
   };
 
   // for Cart
@@ -64,13 +62,13 @@ function ProductCard(props) {
     qty = items[product.id].qty;
   }
 
-  let handleCartToggle = (type) => {
+  let handleCartToggle = (type, alert) => {
     if (type === 'add') {
       qty++;
-      props.dispatch(addToCart(product.id, product.price, index));
+      props.dispatch(addToCart(alert, product.id, product.price, index));
     } else if (qty) {
       qty--;
-      props.dispatch(rmFromCart(product.id, product.price, index));
+      props.dispatch(rmFromCart(alert, product.id, product.price, index));
     }
   };
 
@@ -81,6 +79,7 @@ function ProductCard(props) {
     setBrand(product.brand);
     setPrice(product.price);
     setHardwareplatform(product.hardwareplatform);
+    setDialogOpen(false);
   };
 
   let handleSave = () => {
@@ -91,26 +90,39 @@ function ProductCard(props) {
       hardwareplatform !== 0 &&
       typeof (price - 0) === 'number'
     ) {
+      setDialogOpen(true);
       // need to send whole product obj with changes
-      let changedProduct = {
-        ...product,
-        title,
-        brand,
-        price,
-        hardwareplatform,
-      };
-      props.dispatch(editItem(changedProduct));
-      setEditable(false);
-      props.dispatch(setSnackBar('success', 'Changes saved'));
-      console.log('saved');
     } else {
-      props.dispatch(setSnackBar('error', "Can't save with INVALID field(s)!"));
+      props.dispatch(
+        setSnackBar('error', "Can't save with INVALID field(s)!", 2000)
+      );
       console.log('invalid data');
     }
   };
 
+  let saveConfirm = () => {
+    let changedProduct = {
+      ...product,
+      title,
+      brand,
+      price,
+      hardwareplatform,
+    };
+    props.dispatch(editItem(changedProduct));
+    setEditable(false);
+    props.dispatch(setSnackBar('success', 'Changes saved', 2000));
+    console.log('saved');
+    setDialogOpen(false);
+  };
+
   return (
     <Card className="home-card" key={'prod-' + product.id}>
+      <DialogBox
+        open={dialogOpen}
+        content={'Are you sure want to save changes?'}
+        onConfirm={saveConfirm}
+        onCancel={cancelEdit}
+      />
       <div className="card-action-container">
         {!editable && (
           <IconButton onClick={() => setEditable(true)}>
@@ -195,12 +207,18 @@ function ProductCard(props) {
               <Typography color="secondary" display="inline">
                 {qty}
               </Typography>
-              <IconButton onClick={() => handleCartToggle('rm')}>
+              <IconButton
+                onClick={() => {
+                  qty === 1
+                    ? handleCartToggle('rm', true)
+                    : handleCartToggle('rm', false);
+                }}
+              >
                 <RemoveIcon />
               </IconButton>
             </React.Fragment>
           ) : (
-            <IconButton onClick={() => handleCartToggle('add')}>
+            <IconButton onClick={() => handleCartToggle('add', true)}>
               <Button variant="outlined" color="secondary">
                 Add to Cart
               </Button>

@@ -61,6 +61,18 @@ export function changePage(page) {
   };
 }
 
+export function wishListToggle(type, product) {
+  return (dispatch) => {
+    if (type === 'add') {
+      dispatch(addToWishList(product));
+      dispatch(setSnackBar('success', 'Added to Wishlist', 2000));
+    } else {
+      dispatch(rmFromWishList(product));
+      dispatch(setSnackBar('success', 'Removed from Wishlist', 2000));
+    }
+  };
+}
+
 export function addToWishList(product) {
   return {
     type: ADD_TO_WISHLIST,
