@@ -21,8 +21,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { addToWishList, rmFromWishList } from '../../actions/products';
+import {
+  addToWishList,
+  rmFromWishList,
+  editItem,
+} from '../../actions/products';
 import { addToCart, rmFromCart } from '../../actions/cart';
+import { setSnackBar } from '../../actions/snackbar';
 
 function ProductCard(props) {
   let product = props.product;
@@ -79,9 +84,27 @@ function ProductCard(props) {
   };
 
   let handleSave = () => {
-    if (title && brand && price !== 0 && typeof (price - 0) === 'number') {
+    if (
+      title &&
+      brand &&
+      price &&
+      hardwareplatform !== 0 &&
+      typeof (price - 0) === 'number'
+    ) {
+      // need to send whole product obj with changes
+      let changedProduct = {
+        ...product,
+        title,
+        brand,
+        price,
+        hardwareplatform,
+      };
+      props.dispatch(editItem(changedProduct));
+      setEditable(false);
+      props.dispatch(setSnackBar('success', 'Changes saved'));
       console.log('saved');
     } else {
+      props.dispatch(setSnackBar('error', "Can't save with INVALID field(s)!"));
       console.log('invalid data');
     }
   };

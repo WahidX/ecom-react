@@ -4,6 +4,7 @@ import {
   FETCH_PRODUCTS_FAILED,
   ADD_TO_WISHLIST,
   RM_FROM_WISHLIST,
+  EDIT_ITEM,
   CHANGE_PAGE,
   CLEAR_WISHLIST,
 } from '../actions/actionTypes';
@@ -47,12 +48,24 @@ export default function products(state = initialState, action) {
           (product) => product !== action.product
         ),
       };
-
     case CLEAR_WISHLIST:
       return {
         ...state,
         wishList: [],
       };
+    case EDIT_ITEM:
+      let newProductList = state.productList;
+      for (let i = 0; i < state.productList.length; i++) {
+        if (newProductList[i].id === action.product.id) {
+          newProductList[i] = action.product;
+          break;
+        }
+      }
+      return {
+        ...state,
+        productList: newProductList,
+      };
+
     case CHANGE_PAGE:
       return {
         ...state,

@@ -19,3 +19,6 @@ export const CLEAR_WISHLIST = 'CLEAR_WISHLIST';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const RM_FROM_CART = 'RM_FROM_CART';
 export const CLEAR_CART = 'CLEAR_CART';
+
+// Edit products
+export const EDIT_ITEM = 'EDIT_ITEM';

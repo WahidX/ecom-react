@@ -5,6 +5,7 @@ import {
   CHANGE_PAGE,
   ADD_TO_WISHLIST,
   RM_FROM_WISHLIST,
+  EDIT_ITEM,
   CLEAR_WISHLIST,
 } from './actionTypes';
 
@@ -77,5 +78,13 @@ export function rmFromWishList(product) {
 export function clearWishList() {
   return {
     type: CLEAR_WISHLIST,
+  };
+}
+
+export function editItem(product, id) {
+  return {
+    type: EDIT_ITEM,
+    product,
+    id,
   };
 }
