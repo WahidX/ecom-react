@@ -19,6 +19,7 @@ import Header from './components/shared/Header';
 import Footer from './components/shared/Footer';
 import CustomizedSnackbar from './components/shared/SnackBar';
 import { fetchProducts } from './actions/products';
+import { APIurls } from './utils/urls';
 
 // Custom theme
 const theme = createMuiTheme({
@@ -34,6 +35,8 @@ function App(props) {
     props.dispatch(fetchProducts());
   }, []);
 
+  let repoName = APIurls.repoName();
+
   return (
     <MuiThemeProvider theme={theme}>
       <Router>
@@ -41,12 +44,24 @@ function App(props) {
         <CustomizedSnackbar />
 
         <Switch>
-          <Route exact path="/" component={Home}></Route>
+          <Route exact path={`$/{repoName}/`} component={Home}></Route>
 
-          <Route exact path="/cart" component={CartPage}></Route>
-          <Route exact path="/payment" component={PaymentPage}></Route>
-          <Route exact path="/wishlist" component={WishList}></Route>
-          <Route exact path="/product" component={ProductPage}></Route>
+          <Route exact path={`$/{repoName}/cart`} component={CartPage}></Route>
+          <Route
+            exact
+            path={`$/{repoName}/payment`}
+            component={PaymentPage}
+          ></Route>
+          <Route
+            exact
+            path={`$/{repoName}/wishlist`}
+            component={WishList}
+          ></Route>
+          <Route
+            exact
+            path={`$/{repoName}/product`}
+            component={ProductPage}
+          ></Route>
 
           <Route component={Page404} />
         </Switch>
